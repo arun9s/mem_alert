@@ -11,3 +11,4 @@ echo "Memory usage is $PERCENTAGE% on `hostname`" | mailx -s "MEMORY ALERT ON `h
 else
 exit
 fi
+# comment!
