@@ -1,0 +1,13 @@
+#!/bin/bash
+memusage=`top -n 1 -b | grep "Mem"`
+MAXMEM=`echo $memusage | cut -d" " -f2 | awk '{print substr($0,1,length($0)-1)}'`
+USEDMEM=`echo $memusage | cut -d" " -f4 | awk '{print substr($0,1,length($0)-1)}'`
+used=$(free |grep buffers/cache | grep -v grep | awk '{print $3}')
+totalMem=$(free |grep Mem | grep -v grep | awk '{print $2}')
+USEDMEM1=`expr $used \* 100`
+PERCENTAGE=`expr $USEDMEM1 / $totalMem`
+if [ $PERCENTAGE -ge 80 ]; then
+echo "Memory usage is $PERCENTAGE% on `hostname`" | mailx -s "MEMORY ALERT ON `hostname`" -v '' -t 'arun9s@gmail.com'
+else
+exit
+fi
